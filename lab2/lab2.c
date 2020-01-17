@@ -14,6 +14,6 @@ int aux_one(unsigned char byte, unsigned char length, unsigned char
 }
 
 void binary_char(unsigned char byte) {
-	aux_one(17, 0, 1);
+	printf("%d", aux_one(17, 0, 1));
 
 }
