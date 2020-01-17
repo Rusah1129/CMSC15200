@@ -1,5 +1,5 @@
 /* Ruhi Sah, rsah
- * CS a52, Winter 2020
+ * CS 152, Winter 2020
  * Lab 2
  */
 
@@ -15,5 +15,4 @@ void hex_int(unsigned int n);
 void octal_char(unsigned char byte);
 void octal_int(unsigned int n);
 
-/* IDK LOOK AT COMMENTS MORE CLOSELY */
 

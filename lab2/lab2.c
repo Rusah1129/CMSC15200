@@ -1,39 +1,47 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * Lab 2
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "lab2.h"
 
-void aux_one(int byte, int byte_two, int count) {
+/* aux_one : first helper function to print result from decimal to binaries */
+void aux_one(int byte, int byte_two, int count, int bits) {
 	count += 1;
-	if (count == 9) {
+	if (count == bits) {
 		printf("");
 	} else if (byte_two % 2 == 0) {
-		aux_one(byte, byte_two / 2, count);
+		aux_one(byte, byte_two / 2, count, bits);
 		printf("0"); 
     } else {
-        aux_one(byte, byte_two / 2, count);
+        aux_one(byte, byte_two / 2, count, bits);
 		printf("1");
     }
 }
 
-void aux_two(int byte, int byte_two, int count) {
+/* aux_two : second helper function to print result from decimal to octals */
+void aux_two(int byte, int byte_two, int count, int bits) {
 	count += 1;
-    if (count == 4) {
+    if (count == bits) {
         printf("");
     } else if (byte_two % 8 != 0) {
-        aux_two(byte, byte_two / 8, count);
+        aux_two(byte, byte_two / 8, count, bits);
 		printf("%d", byte_two % 8);
     } else {
-        aux_two(byte, byte_two / 8, count);
+        aux_two(byte, byte_two / 8, count, bits);
 		printf("0");
     }
 }
 
-void aux_three(int byte, int byte_two, int count) {
-    count += 1;
-	if (count == 3) {
+/* aux_three : third helper function to print result from decimal to hexadecimals */
+void aux_three(int byte, int byte_two, int count, int bits) {
+	count += 1;
+	if (count == bits) {
         printf("");
     } else if (byte_two % 16 != 0) {
-        aux_three(byte, byte_two / 16, count);
+        aux_three(byte, byte_two / 16, count, bits);
 		int remain = (byte_two % 16);
 		if (remain == 10) {
 			printf("A");
@@ -51,91 +59,52 @@ void aux_three(int byte, int byte_two, int count) {
 			printf("%d", remain);
         } 
     } else {
-        aux_two(byte, byte_two / 16, count);
+        aux_two(byte, byte_two / 16, count, bits);
 		printf("0");
     }
 }
 
+/* binary_char: main function for translating unsigned char to binary */
 void binary_char(unsigned char byte) {
 	int add = 256;
 	int add_byte = byte;
 	int byte_two = add_byte + add;
-	aux_one(byte_two, byte_two, 0);
+	aux_one(byte_two, byte_two, 0, 9);
 }
 
+/* octal_char: main function for translating unsigned char to octal */
 void octal_char(unsigned char byte) {
 	int add = 512;
 	int add_byte = byte;
 	int byte_two = add_byte + add;
-	aux_two(byte, byte_two, 0);
+	aux_two(byte, byte_two, 0, 4);
 }
 
+/* hex_char: main function for translating unsigned char to binary */
 void hex_char(unsigned char byte) {
     int add = 256;
     int add_byte = byte;
     int byte_two = add_byte + add;
-    aux_three(byte, byte_two, 0);
+    aux_three(byte, byte_two, 0, 3);
 }
 
-void int_aux1(unsigned int n, int dec, int mult) {
-	if (mult != 0) {
-		mult = mult * 2;
-	} else {
-		mult = 1;
-	}
-	if (n == 0) {
-		printf("%d", dec);
-	} else if (n % 2 == 0) {
-		int_aux1(n / 10, dec, mult);
-	} else {
-		dec = dec + mult;
-		int_aux1(((n - 1) / 10), dec, mult);
-	}
-}
-
-void int_aux2(unsigned int n, int dec, int mult) {
-	if (mult != 0) {
-		mult = mult * 8;
-	} else {
-		mult = 1;
-	}
-	if (n == 0) {
-		printf("%d", dec);
-	} else if (n % 8 == 0) {
-		int_aux2(n / 10, dec, mult);
-	} else {
-		dec = dec + mult;
-		int_aux2(((n / 10)), dec, mult);
-	}
-}
-
-void int_aux3(unsigned int n, int dec, int mult) {
-	if (mult != 0) {
-        mult = mult * 16;
-    } else {
-        mult = 1;
-    }
-    if (n == 0) {
-        printf("%d", dec);
-    } else if (n % 8 == 0) {
-        int_aux2(n / 10, dec, mult);
-    } else {
-        dec = dec + mult;
-        int_aux2(((n / 10)), dec, mult);
-    }
-}
-
+/* binary_int: main function for translating unsigned int to binary */
 void binary_int(unsigned int n) {
-	int add = 256;
-    int add_byte = byte;
-    int byte_two = add_byte + add;
-    aux_one(byte_two, byte_two, 0);
+	long int add = 34359738368;
+    int byte_two = n + add;
+    aux_one(byte_two, byte_two, 0, 32);
 }
 
+/* octal_int: main function for translating unsigned char to octal*/
 void octal_int(unsigned int n) {
-	int_aux2(n, 0, 0);
+	long int add = 8589934592;
+    long int byte_two = n + add;
+    aux_two(n, byte_two, 0, 12);
 }
 
+/* hex_int: main function for translating unsigned char to hex */
 void hex_int(unsigned int n) {
-	int_aux3(n, 0, 0);
+	long int add = 4294967296;
+    int byte_two = n + add;
+    aux_three(byte_two, byte_two, 0, 9);
 }

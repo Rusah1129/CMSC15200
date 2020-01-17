@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "lab2.h"
 
-/* evidence_expt: test expt */
+/* binary_char: test binary_char */
 void evidence_binary_char()
 {
     printf("*** testing binary_char\n");
@@ -23,7 +23,7 @@ void evidence_binary_char()
 	printf("\n");
 }
 
-
+/* evidence_octal_char: test octal_char */
 void evidence_octal_char()
 {
     printf("*** testing octal_char\n");
@@ -44,6 +44,7 @@ void evidence_octal_char()
         printf("\n");
 }
 
+/* evidence_hex_char: test hex_char */
 void evidence_hex_char()
 {
     printf("*** testing hex_char\n");
@@ -64,26 +65,41 @@ void evidence_hex_char()
     printf("\n");
 }
 
+/* evidence_hex_int: test hex_int */
+void evidence_hex_int()
+{   
+    printf("*** testing hex_int\n");
+    printf("- expecting 2D6F1:\n");
+    hex_int(186097);
+    printf("\n");
+    printf("- expecting 18A09:\n");
+    hex_int(100873);
+    printf("\n"); 
+    printf("- expecting 0000:\n");
+    hex_int(0000);
+    printf("\n");
+    printf("- expecting 0064:\n");
+    hex_int(100);
+    printf("\n");
+}
+
+
+/* evidence_binary_int: test binary_int */
 void evidence_binary_int()
 {
     printf("*** testing binary_int\n");
-    printf("- expecting 17:\n");
+    printf("- expecting 10011100010001:\n");
     binary_int(10001);
     printf("\n");
-    printf("- expecting 39:\n");
-    binary_int(100111);
+    printf("- expecting 11000101000001001:\n");
+    binary_int(100873);
     printf("\n");
-        printf("- expecting 0:\n");
-        binary_int(0000);
-        printf("\n");
-    printf("- expecting 255:\n");
-        binary_int(11111111);
-        printf("\n");
-        printf("- expecting 222: \n");
-        binary_int(11011110);
-        printf("\n");
+    printf("- expecting 0:\n");
+    binary_int(0000);
+    printf("\n");
 }
 
+/* evidence_octal_int: test octal_int */
 void evidence_octal_int()
 {
     printf("*** testing octal_int\n");
@@ -105,7 +121,6 @@ void evidence_octal_int()
 }
 
 
-
 int main(int argc, char *argv[]) 
 {
 	evidence_binary_char();
@@ -113,5 +128,6 @@ int main(int argc, char *argv[])
 	evidence_hex_char();
 	evidence_binary_int();
 	evidence_octal_int();
+	evidence_hex_int();
 	return 0;
 }
