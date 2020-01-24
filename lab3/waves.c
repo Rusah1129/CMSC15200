@@ -23,7 +23,8 @@ void draw_waves(int side_length, int x_offset, int y_offset) {
     int counter_vert = 0;
     for (counter_horiz = 0; counter_horiz < side_length; counter_horiz++) {
         for (counter_vert = 0; counter_vert < side_length; counter_vert++) {
-            double num = dist(counter_horiz, counter_vert, x_offset, y_offset);             num = (sin(num)) + 1.0;
+            double num = dist(counter_horiz, counter_vert, x_offset, y_offset);
+            num = (sin(num)) + 1.0;
             int b = (num * 255) / 2; 
             printf("0 0 %d\n", b);
         }
