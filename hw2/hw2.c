@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "hw2.h"
 
 int all_positive(int a[], unsigned int alen) {
@@ -179,7 +180,24 @@ int* rle_decode(int* in, unsigned int inlen, unsigned int* outlen) {
     return ptr;
 }
 
-/*
 char* concat_strings(char** strings, unsigned int num_strings) {
-    return 0;
-}*/
+    int i = 0;
+    int length = 0;
+    for (i = 0; i < num_strings; i++) {
+        length = length + strlen(strings[i]);
+    }
+    char *str = (char*) malloc ((length + (num_strings - 1)) * sizeof(char));
+    i = 0;
+    int j = 0;
+    int k = 0;
+    for (i = 0; i < num_strings; i++) { 
+        for (j = 0; j < strlen(strings[i]); j++) {
+            if (strings[i][j] != '\0') {
+                printf("%c", strings[i][j]);
+                str[k] = strings[i][j];
+                k++;
+            }
+        }
+    }
+    return &str[length + (num_strings - 1)];
+} 

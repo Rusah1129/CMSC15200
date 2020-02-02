@@ -113,16 +113,18 @@ void evidence_rotate_right() {
     rotate_right(array3, 7);
     printf("\n");
 }
-/*
- evidence_concat_strings: test concat_strings 
-void evidence_concat_strings() {
-    printf("*** testing concat_strings\n");
-}
-*/
+
 void helper_one(int a[], unsigned int length) {
     int i = 0;
     for (i = 0; i < length; i++) {
         printf("%d ", a[i]);
+    }
+}
+
+void helper_two(char a[], unsigned int length) {
+    int i = 0;
+    for (i = 0; i < length; i++) {
+        printf("%c ", a[i]);
     }
 }
 
@@ -155,7 +157,7 @@ void evidence_rle_encode() {
 
 /* evidence_rle_decode : testing rle_decode */
 void evidence_rle_decode() {
-    printf("*** testing rle_encode \n");
+    printf("*** testing rle_decode \n");
     unsigned int outlen = 0;
 
     int array1[10] = {1, 1, 2, 3, 1, 6, 2, 5, 1, 9};
@@ -175,8 +177,37 @@ void evidence_rle_decode() {
     printf("- expecting 8 9: \n");
     helper_one(new_array3, 2);
     printf("\n");
+
     free(new_array1);
     free(new_array2);
+    free(new_array3);
+}
+
+/* evidence_concat_strings: test concat_strings */ 
+void evidence_concat_strings() {
+    printf("*** testing concat_strings\n");
+
+    char *array1[3] = {"Hello", "World", "!"};
+    char *new_array1 = concat_strings(array1, 3);
+    printf("- expecting Hello World ! \n");
+    helper_two(new_array1, 13);
+    printf("\n");
+
+    char *array2[6] = {"Am", "I", "doing", "this", "right", "?"};
+    char *new_array2 = concat_strings(array2, 6);
+    printf("- expecting Am I doing this right ? \n");
+    helper_two(new_array2, 23);
+    printf("\n");
+
+    char *array3[4] = {"Pompeii", "is", "interesting", "."};
+    char *new_array3 = concat_strings(array3, 4);
+    printf("- expecting Pompeii is interesting .: \n");
+    helper_two(new_array3, 24);
+    printf("\n");
+
+    free(new_array1);
+    free(new_array2);
+    free(new_array3);
 }
 
 /* main: run the evidence functions above */
@@ -190,5 +221,6 @@ int main(int argc, char *argv[]) {
     evidence_rotate_right();
     evidence_rle_encode();
     evidence_rle_decode();
+    evidence_concat_strings();
     return 0;
 }

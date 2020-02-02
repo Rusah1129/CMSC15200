@@ -31,8 +31,8 @@ int* partial_sums(int a[], unsigned int alen);
 greater index value than before */
 void rotate_right(int a[], unsigned int alen);
 
-/* concat_strings : concatenates a list of strings into one larger string.  
-char* concat_strings(char** strings, unsigned int num_strings); */
+/* concat_strings : concatenates a list of strings into one larger string. */   
+char* concat_strings(char** strings, unsigned int num_strings); 
 
 /* rle_encode : uses run-length encoding to compress integer data. */
 int* rle_encode(int* in, unsigned int inlen, unsigned int* outlen);
