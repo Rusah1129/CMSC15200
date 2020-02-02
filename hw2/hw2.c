@@ -1,6 +1,6 @@
 /* Ruhi Sah, rsah
  * CS 152, Winter 2020
- * Lab 2
+ * HW 2
  */
 
 #include <stdlib.h>
@@ -117,7 +117,8 @@ void rotate_right(int a[], unsigned int alen) {
         printf("%d ", ptr[counter]);        
     }
 }
- 
+
+/* finds the length of the output array of rle_encode */ 
 int rle_length(int* in, unsigned int inlen, unsigned int outlen) {
     int num = 0;
     int length = 0;
@@ -157,6 +158,7 @@ int* rle_encode(int* in, unsigned int inlen, unsigned int* outlen) {
     return ptr; 
 } 
 
+/* finds the length of the output array in rle_decode */
 int rle_length_two(int* in, unsigned int inlen, unsigned int outlen) {
     int length = 0;
     int counter = 0;
@@ -191,18 +193,21 @@ char* concat_strings(char** strings, unsigned int num_strings) {
     for (i = 0; i < num_strings; i++) {
         length = length + strlen(strings[i]);
     }
-    char *str = (char*) malloc ((length + (num_strings - 1)) * sizeof(char));
+    char *str = (char*) malloc ((length + (num_strings)) * sizeof(char));
     i = 0;
     int j = 0;
     int k = 0;
     for (i = 0; i < num_strings; i++) { 
         for (j = 0; j < strlen(strings[i]); j++) {
+            if (j == 0 && i != 0) {
+                str[k] = ' ';
+                k++;
+            }
             if (strings[i][j] != '\0') {
                 str[k] = strings[i][j];
-                printf("%c", str[k]);
                 k++;
             }
         }
-    }
-    return &str[length + (num_strings - 1)];
+    } str[k] = '\0';
+    return str; 
 } 

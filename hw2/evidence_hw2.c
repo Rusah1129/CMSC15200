@@ -1,6 +1,6 @@
 /* Ruhi Sah, rsah
  * CS 152, Winter 2020
- * Lab 2
+ * HW 2
  */
 
 #include <stdlib.h>
@@ -119,6 +119,7 @@ void evidence_rotate_right() {
     printf("\n");
 }
 
+/* helper_one : prints results of int array */
 void helper_one(int a[], unsigned int length) {
     int i = 0;
     for (i = 0; i < length; i++) {
@@ -126,6 +127,7 @@ void helper_one(int a[], unsigned int length) {
     }
 }
 
+/* helper_two : prints results of char array */
 void helper_two(char a[], unsigned int length) {
     int i = 0;
     for (i = 0; i < length; i++) {
