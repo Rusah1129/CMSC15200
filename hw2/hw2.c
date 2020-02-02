@@ -1,3 +1,8 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * Lab 2
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -193,8 +198,8 @@ char* concat_strings(char** strings, unsigned int num_strings) {
     for (i = 0; i < num_strings; i++) { 
         for (j = 0; j < strlen(strings[i]); j++) {
             if (strings[i][j] != '\0') {
-                printf("%c", strings[i][j]);
                 str[k] = strings[i][j];
+                printf("%c", str[k]);
                 k++;
             }
         }

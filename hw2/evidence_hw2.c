@@ -1,3 +1,8 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * Lab 2
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "hw2.h"
@@ -124,7 +129,7 @@ void helper_one(int a[], unsigned int length) {
 void helper_two(char a[], unsigned int length) {
     int i = 0;
     for (i = 0; i < length; i++) {
-        printf("%c ", a[i]);
+        printf("%c", a[i]);
     }
 }
 
