@@ -16,6 +16,8 @@ void evidence_all_positive() {
     printf("- expecting 0: %d \n", all_positive(new_array2, 5));
     int new_array3[2] = {1, 100};
     printf("- expecting 1: %d \n", all_positive(new_array3, 2));
+    int new_array4[0] = {};
+    printf("- expecting 1: %d \n", all_positive(new_array4, 0));
 }
 
 /* evidence_exists_positive: test exists_positive */
