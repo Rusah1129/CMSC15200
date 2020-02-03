@@ -99,6 +99,10 @@ int* partial_sums(int a[], unsigned int alen) {
 
 void rotate_right(int a[], unsigned int alen) {
     int* ptr = (int*) malloc (alen * sizeof(int));
+    if (ptr == NULL) {
+        printf("Memory is NULL. \n");
+        exit(1);
+    }
     int i = 0;
     int counter = 0;
     if (ptr == NULL) {
@@ -118,7 +122,7 @@ void rotate_right(int a[], unsigned int alen) {
     }
 }
 
-/* finds the length of the output array of rle_encode */ 
+/* helper that finds the length of the output array of rle_encode */ 
 int rle_length(int* in, unsigned int inlen, unsigned int outlen) {
     int num = 0;
     int length = 0;
@@ -137,6 +141,10 @@ int rle_length(int* in, unsigned int inlen, unsigned int outlen) {
 int* rle_encode(int* in, unsigned int inlen, unsigned int* outlen) {
     int length = rle_length(in, inlen, *outlen);
     int *ptr = (int*) malloc (length * sizeof(int));
+    if (ptr == NULL) {
+        printf("Memory is NULL. \n");
+        exit(1);
+    }
     int index = 0;
     int length2 = 0;
     int num_storage = 0;
@@ -158,10 +166,14 @@ int* rle_encode(int* in, unsigned int inlen, unsigned int* outlen) {
     return ptr; 
 } 
 
-/* finds the length of the output array in rle_decode */
+/* helper that finds the length of the output array in rle_decode */
 int rle_length_two(int* in, unsigned int inlen, unsigned int outlen) {
     int length = 0;
     int counter = 0;
+    if (length % 2 != 0) {
+        printf("length of input array must be an even number \n");
+        exit(1);
+    }
     for (counter = 0; counter <= inlen; counter++) {
         if (counter % 2 == 0) {
             length = length + in[counter];
@@ -173,11 +185,19 @@ int rle_length_two(int* in, unsigned int inlen, unsigned int outlen) {
 int* rle_decode(int* in, unsigned int inlen, unsigned int* outlen) {
     int length = rle_length_two(in, inlen, *outlen);    
     int *ptr = (int*) malloc (length * sizeof(int));
+    if (ptr == NULL) {
+        printf("Memory is NULL. \n");
+        exit(1);
+    }
     int counter = 0;
     int counter2 = 0;
     int index = 0;
     for (counter = 0; counter < inlen; counter++) {
         if (counter % 2 == 0) {
+            if (in[counter] <= 0) {
+                printf("Cannot have non-positive counts. \n");
+                exit(1);
+            }
             for (counter2 = 0; counter2 < in[counter]; counter2++) {
                 ptr[index] = in[counter + 1];
                 index++;
@@ -194,6 +214,10 @@ char* concat_strings(char** strings, unsigned int num_strings) {
         length = length + strlen(strings[i]);
     }
     char *str = (char*) malloc ((length + (num_strings)) * sizeof(char));
+    if (str == NULL) {
+        printf("Memory is NULL. \n");
+        exit(1);
+    }
     i = 0;
     int j = 0;
     int k = 0;

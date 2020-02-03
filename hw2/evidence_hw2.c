@@ -29,6 +29,8 @@ void evidence_exists_positive() {
     printf("- expecting 0: %d \n", exists_positive(array2, 7));
     int array3[5] = {6, 8, 0, -5, 100};
     printf("- expecting 1: %d \n", exists_positive(array3, 5));  
+    int new_array4[0] = {};
+    printf("- expecting 0: %d \n", exists_positive(new_array4, 0));
 }
 
 /* evidence_first_positive: test first_positive */
@@ -74,33 +76,48 @@ void evidence_negate() {
     printf("\n");
 }
 
+/* helper_one : prints results of returned int array */
+void helper_one(int a[], unsigned int length) {
+    int i = 0;
+    for (i = 0; i < length; i++) {
+        printf("%d ", a[i]);
+    }
+}
+
+/* helper_two : prints results of returned char array */
+void helper_two(char a[], unsigned int length) {
+    int i = 0;
+    for (i = 0; i < length; i++) {
+        printf("%c", a[i]);
+    }
+}
+
 /* evidence_partial_sums : test partial_sums */
 void evidence_partial_sums() {
     printf("*** testing partial_sums \n");
-    int i, j, k = 0;
     
     int array1[7] = {-12, -100, 0, 0, 0, -3, -478};
     int *new_array1 = partial_sums(array1, 7);
-    printf("- expecting {0, -12, -112, -112, -112, -112, -115, -593}: \n");
-    for (i = 0; i <= 7; i++) {
-        printf("%d ", new_array1[i]);
-    }
+    printf("- expecting 0 -12 -112 -112 -112 -112 -115 -593: \n");
+    helper_one(new_array1, 8);
     printf("\n");
 
     int array2[5] = {-5, -8, 10, 16, 0};
     int *new_array2 = partial_sums(array2, 5);
-    printf("- expecting {0, -5, -13, -3, 13, 13}: \n");
-    for (j = 0; j <= 5; j++) {
-        printf("%d ", new_array2[j]);
-    }
+    printf("- expecting 0 -5 -13 -3 13 13: \n");
+    helper_one(new_array2, 6);
     printf("\n");
 
     int array3[3] = {0, 0, 0};
     int *new_array3 = partial_sums(array3, 3);
-    printf("- expecting {0, 0, 0, 0}: \n");
-    for (k = 0; k <= 3; k++) {
-        printf("%d ", new_array3[k]);
-    }
+    printf("- expecting 0 0 0 0: \n");
+    helper_one(new_array3, 4);
+    printf("\n");
+
+    int array4[0] = {};
+    int *new_array4 = partial_sums(array4, 0);
+    printf("- expecting : \n");
+    helper_one(new_array4, 0);
     printf("\n");
 }
 
@@ -119,22 +136,6 @@ void evidence_rotate_right() {
     printf("- expecting -4 -19 15 2 -8 0 4: \n");
     rotate_right(array3, 7);
     printf("\n");
-}
-
-/* helper_one : prints results of int array */
-void helper_one(int a[], unsigned int length) {
-    int i = 0;
-    for (i = 0; i < length; i++) {
-        printf("%d ", a[i]);
-    }
-}
-
-/* helper_two : prints results of char array */
-void helper_two(char a[], unsigned int length) {
-    int i = 0;
-    for (i = 0; i < length; i++) {
-        printf("%c", a[i]);
-    }
 }
 
 /* evidence_rle_encode : test rle_encode */
@@ -159,9 +160,17 @@ void evidence_rle_encode() {
     printf("- expecting 1 8 1 9: \n");
     helper_one(new_array3, 4);
     printf("\n");
+
+    int array4[0] = {};
+    int *new_array4 = rle_encode(array4, 0, &outlen);
+    printf("- expecting : \n");
+    helper_one(new_array4, 0);
+    printf("\n");
+
     free(new_array1);
     free(new_array2);
     free(new_array3);
+    free(new_array4);
 }
 
 /* evidence_rle_decode : testing rle_decode */
@@ -187,9 +196,16 @@ void evidence_rle_decode() {
     helper_one(new_array3, 2);
     printf("\n");
 
+    int array4[0] = {};
+    int *new_array4 = rle_decode(array4, 0, &outlen);
+    printf("- expecting : \n");
+    helper_one(new_array4, 0);
+    printf("\n");
+
     free(new_array1);
     free(new_array2);
     free(new_array3);
+    free(new_array4);
 }
 
 /* evidence_concat_strings: test concat_strings */ 
@@ -210,7 +226,7 @@ void evidence_concat_strings() {
 
     char *array3[4] = {"Pompeii", "is", "interesting", "."};
     char *new_array3 = concat_strings(array3, 4);
-    printf("- expecting Pompeii is interesting .: \n");
+    printf("- expecting Pompeii is interesting . \n");
     helper_two(new_array3, 24);
     printf("\n");
 
