@@ -31,7 +31,7 @@ void evidence_split_at(char** s, char d) {
 
     char *new_sentence2 = *split_at("remove all e's in this sentence.", 'e');
     help_read(&new_sentence2, 7);
-    printf("- expecting rmov all 's in this sntnc.\n", \
+    printf("- expecting rmov all 's in this sntnc.\n");
 /*
     char *new_sentence3 = *split_at("foooooool!", "o");
     help_read(&new_sentence3, 2);
@@ -147,6 +147,33 @@ void evidence_convert_units() {
 
 }
 
+double mixture_weight(struct mixture* mixture) {
+
+    struct element *el1;
+
+    el1 -> name = {ptr1, ptr2};
+    el1 -> weight = {ptr3, ptr4};
+
+    char *ptr1 = strdup("Hydrogen");
+    char *ptr2 = strdup("Chlorine");
+    int ptr3 = 3.0;
+    int ptr4 = 2.0;
+    int *ptr5 = {1, 1};
+    
+    struct molecule ml1;
+    ml1.name = strdup("HCL");
+    ml1.nelements = 2;
+    ml1.elements = &el1;
+    ml1.atoms = ptr5; 
+
+    union chemical cl1;
+    cl1.molecule = ml1;
+
+    struct mixture my_mixture;
+    my_mixture, tag = MOLECULE;
+    my_mixture -> cl1[i].tag =  MOLECULE;
+
+}
 
 int main(int argc, char *argv[]) 
 {
