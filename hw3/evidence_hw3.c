@@ -20,7 +20,7 @@ void help_read(char** s, int len) {
     }
 }
 
-void evidence_split_at(char** s, char d) {
+void evidence_split_at() {
     printf("*** testing split_at\n");
     
     char *new_sentence1 = *split_at("The quick brown fox jumped over the \
@@ -146,7 +146,7 @@ void evidence_convert_units() {
     printf("%f %s %d\n", m9.value, m9.units, m9.exponent);
 
 }
-
+/*
 double mixture_weight(struct mixture* mixture) {
 
     struct element *el1;
@@ -174,7 +174,7 @@ double mixture_weight(struct mixture* mixture) {
     my_mixture -> cl1[i].tag =  MOLECULE;
 
 }
-
+*/
 int main(int argc, char *argv[]) 
 {
     evidence_split_at();
