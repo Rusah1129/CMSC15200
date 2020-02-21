@@ -88,13 +88,13 @@ unsigned int bst_c(FILE *f, bst *t, char c)
     unsigned int num_cs = 0;
     if (t) {
         } if (t -> c -> cnet[0] == c) {
+            num_cs++;
             bst_c(f, t -> lsub, c);
             fprintf(f, "%c \n", c);
             bst_c(f, t -> rsub, c);
         } else {
             bst_c(f, t -> lsub, c);
-            bst_c(f, t -> rsub, c);
-        } 
+            bst_c(f, t -> rsub, c); 
     } return num_cs;
 }
 
