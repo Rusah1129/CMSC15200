@@ -14,26 +14,25 @@ bst *bst_singleton(vcard *c)
 
 int bst_insert(bst *t, vcard *c)
 {
-    int count = 0;
     if (t == NULL) {
         fprintf(stderr, "Empty bst.");
         exit(1);
-    } else if (strcmp(t -> c -> cnet, c -> cnet) < 0) {
+    } else if (strcmp(t -> c -> cnet, c -> cnet) > 0) {
         if (t -> lsub == NULL) {
             t -> lsub = bst_singleton(c);
-            return count + 1;
+            return 1;
         } else {
-            bst_insert(t -> lsub, c);
+            return bst_insert(t -> lsub, c);
         }
-    } else if (strcmp(t -> c -> cnet, c -> cnet) > 0) {
+    } else if (strcmp(t -> c -> cnet, c -> cnet) < 0) {
         if (t -> rsub == NULL) {
             t -> rsub = bst_singleton(c);
-            return count + 1;
+            return 1;
         } else {
-            bst_insert(t -> rsub, c);
+            return bst_insert(t -> rsub, c);
         }
-    } else if ((!strcmp(t -> c -> cnet, c -> cnet)) == 0) {
-        return count;
+    } else {
+        return 0;
     }
 }
 
@@ -67,9 +66,14 @@ vcard *bst_search(bst *t, char *cnet, int *n_comparisons)
     n_comparisons++;
     if (t) {
         if (t -> c -> cnet == cnet) {
-            bst_search(t -> lsub, cnet, n_comparisons);
-            bst_search(t -> rsub, cnet, n_comparisons);
-        }
+                return t -> c;
+            } else {
+                vcard *found = bst_search(t -> lsub, cnet, n_comparisons);
+                if (t -> lsub == NULL) {
+                    bst_search(t -> rsub, cnet, n_comparisons);
+                    }
+                    return found;
+                }
     } else {
         return NULL;
     } 
@@ -84,13 +88,13 @@ unsigned int bst_c(FILE *f, bst *t, char c)
 {   
     unsigned int num_cs = 0;
     if (t) {
-        if (t -> lsub) {
+        if (t -> lsub && strcmp(&t -> c -> cnet[0], &c) > 0) {
             bst_c(f, t -> lsub, c);
-        } else if (t -> rsub) {
-            bst_c(f, t -> rsub, c);
         } else if (t -> c -> cnet[0] == c) {
             fprintf(f, "%c \n", c);
             num_cs++;
+        } else if (t -> rsub && strcmp(&t -> c -> cnet[0], &c) < 0) {
+            bst_c(f, t -> rsub, c);
         }
     } return num_cs;
 }

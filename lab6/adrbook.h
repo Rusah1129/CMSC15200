@@ -59,6 +59,7 @@ unsigned int bst_num_entries(bst *t);
 
 /* The empty bst has height 0. */
 /* A singleton tree has height 1, etc. */
+/* Return the number of vcards inserted (either 1 or 0). */
 unsigned int bst_height(bst *t);
 
 /* Return NULL if nothing is found. */
