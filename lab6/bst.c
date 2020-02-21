@@ -6,32 +6,73 @@ const char *_bst_todo_format = "TODO [bst]: %s\nhalting\n";
 
 bst *bst_singleton(vcard *c)
 {
-  fprintf(stderr,_bst_todo_format,"bst_singleton");
-  exit(1);
+    bst *res = (bst*) malloc(sizeof(bst));
+    res -> c = c;
+    res -> lsub = res -> rsub = NULL;
+    return res;
 }
 
 int bst_insert(bst *t, vcard *c)
 {
-  fprintf(stderr,_bst_todo_format,"bst_insert");
-  exit(1);
+    int count = 0;
+    if (t == NULL) {
+        fprintf(stderr, "Empty bst.");
+        exit(1);
+    } else if (strcmp(t -> c -> cnet, c -> cnet) < 0) {
+        if (t -> lsub == NULL) {
+            t -> lsub = bst_singleton(c);
+            return count + 1;
+        } else {
+            bst_insert(t -> lsub, c);
+        }
+    } else if (strcmp(t -> c -> cnet, c -> cnet) > 0) {
+        if (t -> rsub == NULL) {
+            t -> rsub = bst_singleton(c);
+            return count + 1;
+        } else {
+            bst_insert(t -> rsub, c);
+        }
+    } else if ((!strcmp(t -> c -> cnet, c -> cnet)) == 0) {
+        return count;
+    }
 }
 
 unsigned int bst_num_entries(bst *t)
 {
-  fprintf(stderr,_bst_todo_format,"bst_num_entries");
-  exit(1);  
+    if (t == NULL) {
+        return 0;
+    } else { 
+        return 1 + bst_num_entries(t -> lsub) + bst_num_entries(t -> rsub);
+    }
 }
 
 unsigned int bst_height(bst *t)
 {
-  fprintf(stderr,_bst_todo_format,"bst_height");
-  exit(1);
+    unsigned int counter1 = 0;
+    unsigned int counter2 = 0;
+    if (t -> lsub) {
+        counter1 = bst_height(t -> lsub);
+    } else if (t -> rsub) {
+        counter2 = bst_height(t -> rsub);
+    } 
+    if (counter1 > counter2) {
+        return counter1 + 1;
+    } else {
+        return counter2 + 1;
+    }
 }
 
 vcard *bst_search(bst *t, char *cnet, int *n_comparisons)
 {
-  fprintf(stderr,_bst_todo_format,"bst_search");
-  exit(1);
+    n_comparisons++;
+    if (t) {
+        if (t -> c -> cnet == cnet) {
+            bst_search(t -> lsub, cnet, n_comparisons);
+            bst_search(t -> rsub, cnet, n_comparisons);
+        }
+    } else {
+        return NULL;
+    } 
 }
 
 /* note: f is the destination of the output, e.g. the screen;
@@ -40,13 +81,25 @@ vcard *bst_search(bst *t, char *cnet, int *n_comparisons)
  * as its first parameter
  */
 unsigned int bst_c(FILE *f, bst *t, char c)
-{
-  fprintf(stderr,_bst_todo_format,"bst_c");
-  exit(1);
+{   
+    unsigned int num_cs = 0;
+    if (t) {
+        if (t -> lsub) {
+            bst_c(f, t -> lsub, c);
+        } else if (t -> rsub) {
+            bst_c(f, t -> rsub, c);
+        } else if (t -> c -> cnet[0] == c) {
+            fprintf(f, "%c \n", c);
+            num_cs++;
+        }
+    } return num_cs;
 }
 
 void bst_free(bst *t)
 {
-  fprintf(stderr,_bst_todo_format,"bst_free");
-  exit(1);
+    if (t) {
+        bst_free(t -> lsub);
+        bst_free(t -> rsub);
+        free(t);
+    }
 }

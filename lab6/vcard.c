@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "adrbook.h"
 
-const char *_vcard_todo_format = "TODO [vcard]: %s\nhalting\n";
 
 /* vcard_new : allocate a new vcard, copy all strings, return new object
  * note: this is a "deep copy" as opposed to a "shallow copy"; the string 
@@ -10,16 +9,27 @@ const char *_vcard_todo_format = "TODO [vcard]: %s\nhalting\n";
  */
 vcard *vcard_new(char *cnet, char *email, char *fname, char *lname, char *tel)
 {
-  fprintf(stderr,_vcard_todo_format,"vcard_new");
-  exit(1);
+    vcard *new_vcard = (vcard*) malloc (sizeof(new_vcard));
+    new_vcard -> cnet = strdup(cnet);
+    new_vcard -> email = strdup(email);
+    new_vcard -> fname = strdup(fname);
+    new_vcard -> lname = strdup(lname);
+    new_vcard -> tel = strdup(tel);
+
+    return new_vcard; 
 }
 
 /* vcard_free : free vcard and the strings it points to
  */
 void vcard_free(vcard *c)
 {
-  fprintf(stderr,_vcard_todo_format,"vcard_free");
-  exit(1);
+    if (c != NULL) {
+        free(c -> cnet);  
+        free(c -> email);
+        free(c -> fname);
+        free(c -> lname);
+        free(c -> tel);
+    }
 }
 
 /* vcard_show : display contents of vcard
@@ -30,6 +40,9 @@ void vcard_free(vcard *c)
  */
 void vcard_show(FILE *f, vcard *c)
 {
-  fprintf(stderr,_vcard_todo_format,"vcard_show");
-  exit(1);
+    fprintf(f, "cnet %s", c -> cnet);
+    fprintf(f, "cnet %s", c -> email);
+    fprintf(f, "cnet %s", c -> fname);
+    fprintf(f, "cnet %s", c -> lname);
+    fprintf(f, "cnet %s", c -> tel);
 }
