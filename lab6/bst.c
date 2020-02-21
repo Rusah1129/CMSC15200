@@ -47,13 +47,13 @@ unsigned int bst_num_entries(bst *t)
 
 unsigned int bst_height(bst *t)
 {
-    unsigned int counter1 = 0;
-    unsigned int counter2 = 0;
-    if (t -> lsub) {
-        counter1 = bst_height(t -> lsub);
-    } else if (t -> rsub) {
-        counter2 = bst_height(t -> rsub);
-    } 
+    if (t == NULL) {
+        return 0;
+    }
+
+    unsigned int counter1 = bst_height(t -> lsub);
+    unsigned int counter2 = bst_height(t -> rsub);
+    
     if (counter1 > counter2) {
         return counter1 + 1;
     } else {
@@ -63,14 +63,14 @@ unsigned int bst_height(bst *t)
 
 vcard *bst_search(bst *t, char *cnet, int *n_comparisons)
 {
-    n_comparisons++;
     if (t) {
+        ++*n_comparisons;
         if (t -> c -> cnet == cnet) {
                 return t -> c;
             } else {
                 vcard *found = bst_search(t -> lsub, cnet, n_comparisons);
                 if (t -> lsub == NULL) {
-                    bst_search(t -> rsub, cnet, n_comparisons);
+                        bst_search(t -> rsub, cnet, n_comparisons);
                     }
                     return found;
                 }
@@ -101,7 +101,7 @@ unsigned int bst_c(FILE *f, bst *t, char c)
 
 void bst_free(bst *t)
 {
-    if (t) {
+    if (t != NULL) {
         bst_free(t -> lsub);
         bst_free(t -> rsub);
         free(t);

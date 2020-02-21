@@ -9,7 +9,7 @@
  */
 vcard *vcard_new(char *cnet, char *email, char *fname, char *lname, char *tel)
 {
-    vcard *new_vcard = (vcard*) malloc (sizeof(new_vcard));
+    vcard *new_vcard = (vcard*) malloc (sizeof(vcard));
     new_vcard -> cnet = strdup(cnet);
     new_vcard -> email = strdup(email);
     new_vcard -> fname = strdup(fname);
