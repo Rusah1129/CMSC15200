@@ -87,14 +87,14 @@ unsigned int bst_c(FILE *f, bst *t, char c)
 {   
     unsigned int num_cs = 0;
     if (t) {
-        if (t -> lsub && strcmp(&t -> c -> cnet[0], c) > 0) {
+        } if (t -> c -> cnet[0] == c) {
             bst_c(f, t -> lsub, c);
-        } else if (t -> c -> cnet[0] == c) {
             fprintf(f, "%c \n", c);
-            num_cs++;
-        } else if (t -> rsub && strcmp(&t -> c -> cnet[0], &c) < 0) {
             bst_c(f, t -> rsub, c);
-        }
+        } else {
+            bst_c(f, t -> lsub, c);
+            bst_c(f, t -> rsub, c);
+        } 
     } return num_cs;
 }
 
