@@ -95,8 +95,8 @@ unsigned int bst_c(FILE *f, bst *t, char c)
         } else {
             bst_c(f, t -> lsub, c);
             bst_c(f, t -> rsub, c); 
-    } else {
-    return num_cs;
+    } else if (t == NULL) {
+        return num_cs;
     }
 }
 
