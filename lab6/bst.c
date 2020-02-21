@@ -63,18 +63,17 @@ unsigned int bst_height(bst *t)
 
 vcard *bst_search(bst *t, char *cnet, int *n_comparisons)
 {
+    ++*n_comparisons;
     if (t) {
-        ++*n_comparisons;
-        if (t -> c -> cnet == cnet) {
+        if (strcmp(t -> c -> cnet, cnet) == 0) {
                 return t -> c;
             } else {
-                vcard *found = bst_search(t -> lsub, cnet, n_comparisons);
-                if (t -> lsub == NULL) {
-                        bst_search(t -> rsub, cnet, n_comparisons);
-                    }
-                    return found;
-                }
-    } else {
+                if (strcmp(t -> c -> cnet, cnet) < 0) {
+                    return bst_search(t -> rsub, cnet, n_comparisons);
+                } else if (strcmp(t -> c -> cnet, cnet) > 0) {
+                    return bst_search(t -> lsub, cnet, n_comparisons);
+                } 
+        }
         return NULL;
     } 
 }
@@ -88,7 +87,7 @@ unsigned int bst_c(FILE *f, bst *t, char c)
 {   
     unsigned int num_cs = 0;
     if (t) {
-        if (t -> lsub && strcmp(&t -> c -> cnet[0], &c) > 0) {
+        if (t -> lsub && strcmp(&t -> c -> cnet[0], c) > 0) {
             bst_c(f, t -> lsub, c);
         } else if (t -> c -> cnet[0] == c) {
             fprintf(f, "%c \n", c);
