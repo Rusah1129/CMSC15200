@@ -41,8 +41,8 @@ void vcard_free(vcard *c)
 void vcard_show(FILE *f, vcard *c)
 {
     fprintf(f, "cnet %s \n", c -> cnet);
-    fprintf(f, "cnet %s \n", c -> email);
-    fprintf(f, "cnet %s \n", c -> fname);
-    fprintf(f, "cnet %s \n", c -> lname);
-    fprintf(f, "cnet %s \n", c -> tel);
+    fprintf(f, "email %s \n", c -> email);
+    fprintf(f, "fname %s \n", c -> fname);
+    fprintf(f, "lname %s \n", c -> lname);
+    fprintf(f, "tel %s \n", c -> tel);
 }
