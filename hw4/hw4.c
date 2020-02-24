@@ -90,7 +90,7 @@ void intlist_show(intlist* xs) {
  
     while (xs -> next != NULL) {
         printf("%d ", xs -> val);
-        xs = xs -> next;;        
+        xs = xs -> next;        
     }
 
     if (xs -> next == NULL) {
@@ -111,9 +111,7 @@ void intlist_free(intlist* xs) {
 
 intlist* add_digits(unsigned int base, intlist* ds1, intlist* ds2) {
 
-    struct intlist *one = ds1;
-    struct intlist *two = ds2;
-    struct intlist *res = (struct intlist*) malloc (sizeof(struct intlist));
+    struct intlist *res = NULL;
 
     unsigned int remainder = 0;
     unsigned int addition = 0;
@@ -124,11 +122,8 @@ intlist* add_digits(unsigned int base, intlist* ds1, intlist* ds2) {
     }
 
     while (ds1 && ds2) {
-        one = ds1;
-        two = ds2;
-        ds1 = ds1 -> next;
-        ds2 = ds2 -> next;
-        addition = one -> val + two -> val + remainder;
+        
+        addition = ds1 -> val + ds2 -> val + remainder;
         remainder = 0;
 
         if (addition >= base) {
@@ -136,13 +131,19 @@ intlist* add_digits(unsigned int base, intlist* ds1, intlist* ds2) {
             remainder = 1;
         }
 
-        intlist_append(res, addition);
+        ds1 = ds1 -> next;
+        ds2 = ds2 -> next;
+        if (res  == NULL) {
+            res = (struct intlist*) malloc (sizeof(struct intlist));
+            res -> val = addition;
+            res -> next = NULL;
+        } else {
+            intlist_append(res, addition);
+        }   
     }
 
     while (ds1 == NULL && ds2 != NULL) {
-        two = ds2;
-        ds2 = ds2 -> next;
-        addition = one -> val + remainder;
+        addition = ds2 -> val + remainder;
         remainder = 0;
 
         while (addition >= base) {
@@ -150,14 +151,20 @@ intlist* add_digits(unsigned int base, intlist* ds1, intlist* ds2) {
             remainder = addition / base + remainder;
             intlist_append(res, addition);
         }
-
-        intlist_append(res, addition);
+    
+        ds2 = ds2 -> next;
+        
+        if (res  == NULL) {
+            res = (struct intlist*) malloc (sizeof(struct intlist));
+            res -> val = addition;
+            res -> next = NULL;
+        } else {
+            intlist_append(res, addition);
+        }
     }    
 
     while (ds2 == NULL && ds1 != NULL) {
-        one = ds1;
-        ds1 = ds1 -> next;
-        addition = one -> val + remainder;
+        addition = ds1 -> val + remainder;
         remainder = 0;
 
         while (addition >= base) {
@@ -165,7 +172,16 @@ intlist* add_digits(unsigned int base, intlist* ds1, intlist* ds2) {
             addition = addition / base;
             intlist_append(res, addition);
         }
-        intlist_append(res, addition);
+
+        ds1 = ds1 -> next;
+        
+        if (res  == NULL) {
+            res = (struct intlist*) malloc (sizeof(struct intlist));
+            res -> val = addition;
+            res -> next = NULL;
+        } else {
+            intlist_append(res, addition);
+        }
     }
     
     return res;
