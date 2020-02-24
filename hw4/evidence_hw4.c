@@ -199,7 +199,7 @@ void evidence_intlist_set() {
 void evidence_intlist_append() {
     printf("*** testing intlist_append \n");
    
-    printf("- expecting -2 30 16 45 3: \n");
+    printf("- expecting -2 30 16 3 3: \n");
     struct intlist* one = linked_lists(1);
     struct intlist* two = intlist_append(one, 3);
     intlist_show(two);
@@ -232,7 +232,7 @@ void evidence_intlist_append() {
 void evidence_intlist_prepend() {
     printf("*** testing intlist_prepend \n");
     
-    printf("- expecting 3 -2 30 16 45: \n");
+    printf("- expecting 3 -2 30 16 3: \n");
     struct intlist* one = linked_lists(1);
     struct intlist* two = intlist_prepend(one, 3);
     intlist_show(two);
