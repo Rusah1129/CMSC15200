@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include "hw4.h"
 
-//fix intlist_frees
-
 intlist* linked_lists(unsigned int linked_list_num) {
 
     struct intlist* one = NULL;
@@ -156,7 +154,8 @@ void evidence_intlist_show() {
     struct intlist* one = linked_lists(1);
     intlist_show(one);
     free(one);
-    printf("\n");
+    printf("\n")
+;
     printf("- expecting 2 6 1: \n");
     struct intlist* two = linked_lists(2);
     intlist_show(two);
@@ -167,6 +166,7 @@ void evidence_intlist_show() {
 void evidence_intlist_set() {
     printf("*** testing intlist_set \n");
     printf("- expecting -2 30 16 45: \n");
+    //?????????????????????????????????????????
     struct intlist* one = linked_lists(1);
     intlist_set(one, 3, 45);
     intlist_show(one);
@@ -201,27 +201,31 @@ void evidence_intlist_append() {
    
     printf("- expecting -2 30 16 45 3: \n");
     struct intlist* one = linked_lists(1);
-    intlist_show(intlist_append(one, 3));
-    printf("\n");
-    intlist_free(one);
-
-    printf("- expecting 2 6 1 9: \n");
-    struct intlist* two = linked_lists(2);
-    intlist_show(intlist_append(two, 9));
+    struct intlist* two = intlist_append(one, 3);
+    intlist_show(two);
     printf("\n");
     intlist_free(two);
 
-    printf("- expecting 3 4 12: \n");
-    struct intlist* three = linked_lists(3);
-    intlist_show(intlist_append(three, 12));
-    printf("\n");
-    intlist_free(three);
-
-    printf("- expecting 9 1 3 7 6 4 2 1 5: \n");
-    struct intlist* four = linked_lists(4);
-    intlist_show(intlist_append(four, 5));
+    printf("- expecting 2 6 1 9: \n");
+    struct intlist* three = linked_lists(2);
+    struct intlist* four = intlist_append(three, 9);
+    intlist_show(four);
     printf("\n");
     intlist_free(four);
+
+    printf("- expecting 3 4 12: \n");
+    struct intlist* five = linked_lists(3);
+    struct intlist* six = intlist_append(five, 12);
+    intlist_show(six);
+    printf("\n");
+    intlist_free(six);
+
+    printf("- expecting 9 1 3 7 6 4 2 1 5: \n");
+    struct intlist* seven = linked_lists(4);
+    intlist* eight = intlist_append(seven, 5);
+    intlist_show(eight);
+    printf("\n");
+    intlist_free(eight);
 
 }
 
@@ -230,27 +234,31 @@ void evidence_intlist_prepend() {
     
     printf("- expecting 3 -2 30 16 45: \n");
     struct intlist* one = linked_lists(1);
-    intlist_show(intlist_prepend(one, 3));
-    printf("\n");
-    intlist_free(one);
-
-    printf("- expecting 37 2 6 1: \n");
-    struct intlist* two = linked_lists(2);
-    intlist_show(intlist_prepend(two, 37));
+    struct intlist* two = intlist_prepend(one, 3);
+    intlist_show(two);
     printf("\n");
     intlist_free(two);
 
-    printf("- expecting 9 3 4: \n");
-    struct intlist* three = linked_lists(3);
-    intlist_show(intlist_prepend(three, 9));
-    printf("\n");
-    intlist_free(three);
-
-    printf("- expecting 55 3 1 3 7 6 4 2 1: \n");
-    struct intlist* four = linked_lists(4);
-    intlist_show(intlist_prepend(four, 55));
+    printf("- expecting 37 2 6 1: \n");
+    struct intlist* three = linked_lists(2);
+    struct intlist* four = intlist_prepend(three, 37);
+    intlist_show(four);
     printf("\n");
     intlist_free(four);
+
+    printf("- expecting 9 3 4: \n");
+    struct intlist* five = linked_lists(3);
+    struct intlist* six = intlist_prepend(five, 9);
+    intlist_show(six);
+    printf("\n");
+    intlist_free(six);
+
+    printf("- expecting 55 3 1 3 7 6 4 2 1: \n");
+    struct intlist* seven = linked_lists(4);
+    struct intlist* eight = intlist_prepend(seven, 55);
+    intlist_show(eight);
+    printf("\n");
+    intlist_free(eight);
 
 }
 
