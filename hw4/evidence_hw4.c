@@ -166,7 +166,7 @@ void evidence_intlist_show() {
 void evidence_intlist_set() {
     printf("*** testing intlist_set \n");
     printf("- expecting -2 30 16 45: \n");
-    //?????????????????????????????????????????
+    
     struct intlist* one = linked_lists(1);
     intlist_set(one, 3, 45);
     intlist_show(one);
@@ -187,7 +187,7 @@ void evidence_intlist_set() {
     printf("\n");
     intlist_free(three);
 
-    printf("- expecting 3 1 3 7 6 4 2 1: \n");
+    printf("- expecting 3 1 3 7 6 98 2 1: \n");
     struct intlist* four = linked_lists(4);
     intlist_set(four, 5, 98);
     intlist_show(four);

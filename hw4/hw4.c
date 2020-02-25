@@ -30,11 +30,11 @@ void intlist_set(intlist* xs, unsigned int n, int val) {
         fprintf(stderr, "list is not sufficiently long.");
         exit(1);
     }
-
+    
     if (xs != NULL && n != 0) {
         xs = xs -> next;
         --n;
-        intlist_nth(xs, n);
+        intlist_set(xs, n, val);
     }
 
     if (n == 0) {
