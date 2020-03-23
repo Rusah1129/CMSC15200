@@ -1,0 +1,357 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * PROJ 2
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include "board.h"
+#include "pos.h"
+#include "logic.h"
+
+void evidence_board_new() 
+{
+    struct board* board1 = board_new(3, 4, BITS);
+    printf("board: %d ", board1 -> u.bits[0]);
+    board_show(board1);
+    printf("\n");
+    struct board* board2 = board_new(10, 10, MATRIX);
+    board_show(board2);
+    printf("\n");
+    struct board* board3 = board_new(16, 2, MATRIX);
+    board_show(board3);
+    printf("\n");
+    board_free(board3);
+}
+
+void evidence_board_show() {
+    struct board* board1 = board_new(4, 5, MATRIX);
+    board_show(board1);
+    printf("\n");
+    struct board* board2 = board_new(4, 8, MATRIX);
+    board_show(board2);
+    printf("\n");
+    struct board* board3 = board_new(3, 2, MATRIX);
+    board_show(board3);
+    printf("\n");
+    board_free(board1);
+    board_free(board2);
+    board_free(board3);
+}
+
+void evidence_board_set() {
+    struct board* board1 = board_new(4, 5, MATRIX);
+    struct pos pos1 = make_pos(0, 0);
+    board_set(board1, pos1, BLACK);
+    board_show(board1);
+    printf("\n");
+    struct board* board2 = board_new(6, 3, MATRIX);
+    struct pos pos2 = make_pos(1, 2);
+    board_set(board2, pos2, WHITE);
+    board_show(board2);
+    printf("\n");
+    board_free(board1);
+    board_free(board2);
+}
+
+void evidence_board_get() {
+    struct board* board1 = board_new(4, 4, MATRIX);
+    struct pos pos1 = make_pos(1, 3);
+    cell cell1 = board_get(board1, pos1);
+    board_set(board1, pos1, BLACK);
+    printf("expecting empty: ");
+    if (cell1 == EMPTY) {
+        printf("empty");
+    } else if (cell1 == BLACK) {
+        printf("black");
+    } else if (cell1 == WHITE) {
+        printf("white");
+    }
+    printf("\n\n");
+    board_set(board1, pos1, BLACK);
+    cell cell2 = board_get(board1, pos1);
+    printf("expecting black: ");
+    if (cell2 == EMPTY) {
+        printf("empty");
+    } else if (cell2 == BLACK) {
+        printf("black");
+    } else if (cell2 == WHITE) {
+        printf("white");
+    }
+
+    printf("\n\n");
+    board_free(board1);
+}
+
+void evidence_new_game() {
+    game* game2 = new_game(5, 7, 6, MATRIX);
+    board_show(game2 -> b);
+    printf("\n\n");
+    printf("%d ", game2 -> run);
+    if (game2 -> next == BLACK_NEXT) {
+        printf("black_next");
+    } else if (game2 -> next == WHITE_NEXT) {
+        printf("white_next");
+    }
+    printf("\n\n");
+
+    game* game1 = new_game(2, 3, 3, MATRIX);
+    board_show(game1 -> b);
+    printf("\n\n");
+    printf("%d ", game1 -> run);
+    if (game1 -> next == BLACK_NEXT) {
+        printf("black_next");
+    } else if (game1 -> next == WHITE_NEXT) {
+        printf("white_next");
+    }
+    printf("\n\n");
+    game_free(game1);
+    game_free(game2);
+}
+
+void evidence_drop_piece() {
+    game* game1 = new_game(3, 4, 5, MATRIX);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    game1 -> next = WHITE_NEXT;
+    drop_piece(game1, 3);
+    board_show(game1 -> b);
+    printf("\n");
+    game_free(game1);
+}
+
+void evidence_twist() {
+    game* game1 = new_game(3, 4, 5, MATRIX);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 3);
+    board_show(game1 -> b);
+    printf("\n");
+    twist(game1, CW);
+    board_show(game1 -> b);
+    printf("\n");
+
+    game* game2 = new_game(3, 7, 5, MATRIX);
+    drop_piece(game2, 6);
+    drop_piece(game2, 6);
+    drop_piece(game2, 3);
+    game2 -> next = WHITE_NEXT;
+    drop_piece(game2, 2);
+    drop_piece(game2, 4);
+    drop_piece(game2, 3);
+    game1 -> next = BLACK_NEXT;
+    drop_piece(game2, 1);
+    drop_piece(game2, 3);
+    drop_piece(game2, 2);
+    drop_piece(game2, 4);
+    board_show(game2 -> b);
+    printf("\n");
+    twist(game2, CW);
+    board_show(game2 -> b);
+    printf("\n");
+    twist(game2, CCW);
+    board_show(game2 -> b);
+    printf("\n");
+    game_free(game1);
+    game_free(game2);
+
+}
+
+void evidence_game_outcome() {
+    game* game1 = new_game(3, 4, 5, MATRIX);
+    drop_piece(game1, 2);
+    drop_piece(game1, 1);
+    drop_piece(game1, 3);
+    drop_piece(game1, 3);
+    drop_piece(game1, 3);
+    board_show(game1 -> b);
+    printf("\n");
+    if (game_outcome(game1) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game1) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game1) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game1) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+    drop_piece(game1, 2);
+    drop_piece(game1, 1);
+    struct pos pos5 = make_pos(4, 2);
+    board_set(game1 -> b, pos5, WHITE);
+    struct pos pos6 = make_pos(3, 1);
+    board_set(game1 -> b, pos6, WHITE);
+    board_show(game1 -> b);
+    printf("\n");
+    if (game_outcome(game1) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game1) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game1) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game1) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+
+    printf("\n");
+    struct pos pos = make_pos(3, 3);
+    board_set(game1 -> b, pos, BLACK);
+    struct pos pos2 = make_pos(2, 2);
+    board_set(game1 -> b, pos2, BLACK);
+    struct pos pos3 = make_pos(1, 1);
+    board_set(game1 -> b, pos3, BLACK);
+    struct pos pos7 = make_pos(2, 3);
+    board_set(game1 -> b, pos7, EMPTY);
+    board_show(game1 -> b);
+    printf("\n");
+    if (game_outcome(game1) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game1) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game1) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game1) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+
+    printf("\n");
+game* game2 = new_game(3, 7, 5, MATRIX);
+    drop_piece(game2, 6);
+    drop_piece(game2, 6);
+    drop_piece(game2, 3);
+    game2 -> next = WHITE_NEXT;
+    drop_piece(game2, 0);
+    drop_piece(game2, 4);
+    drop_piece(game2, 3);
+    drop_piece(game2, 1);
+    drop_piece(game2, 3);
+    drop_piece(game2, 2);
+    drop_piece(game2, 4);
+    board_show(game2 -> b);
+    if (game_outcome(game2) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game2) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+
+    printf("\n");
+    twist(game2, CW);
+    board_show(game2 -> b);
+    if (game_outcome(game2) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game2) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+    printf("\n");
+    board_show(game2 -> b);
+    if (game_outcome(game2) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game2) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+
+    printf("\n");
+    game2 -> next = BLACK_NEXT;
+    drop_piece(game2, 4);
+    drop_piece(game2, 4);
+    drop_piece(game2, 4);
+    board_show(game2 -> b);
+    if (game_outcome(game2) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game2) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+    printf("\n");
+    twist(game2, CCW);
+    struct pos pos4 = make_pos(4, 1);
+    board_set(game2 -> b, pos4, EMPTY);
+    board_show(game2 -> b);
+    if (game_outcome(game2) == DRAW) {
+        printf("Draw!");
+        printf("\n");
+    } else if (game_outcome(game2) == WHITE_WIN) {
+        printf("White wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == BLACK_WIN) {
+        printf("Black wins!");
+        printf("\n");
+    } else if (game_outcome(game2) == IN_PROGRESS) {
+        printf("In progress!");
+        printf("\n");
+    }
+    printf("\n");
+    game_free(game1);
+    game_free(game2);
+}
+
+int main(int argc, char *argv[])
+{
+    evidence_board_new();
+    evidence_board_show();
+    evidence_board_get();
+    evidence_board_set();
+    evidence_new_game();
+    evidence_drop_piece();
+    evidence_twist();
+    evidence_game_outcome(); 
+    return 0;
+}
+

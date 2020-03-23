@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "htbl.h"
+
+unsigned long int good_hash(char *s)
+{
+    unsigned int res = 17;
+    unsigned int i = 0;
+    while (s[i]) {
+        res = res * 37 + i;
+        i++;
+    }
+    return res;
+}
+
+unsigned long int bad_hash(char *s)
+{
+    unsigned res = 17;
+    unsigned i = 0;
+    while (s[i]) {
+        while (i < 2) {
+            res = res * 37 + i;
+            i++;
+        }
+    } 
+    return res;
+}
+
+htbl *htbl_new(unsigned long int(*h)(char*), unsigned int sz)
+{
+    htbl *new_htbl = (htbl*) malloc (sizeof(htbl) * sz);
+    new_htbl -> hash = h;
+    new_htbl -> buckets = NULL;
+    new_htbl -> n_buckets = 0;
+    return new_htbl;
+}
+
+unsigned int htbl_n_entries(htbl *t)
+{
+    int i = 0;
+    while(t) {
+        while (t -> buckets) {
+            while (t -> buckets[i]) {
+                while (t -> buckets[i] -> next) {
+                    ++i;
+                }
+            }
+        }
+    }
+    return i;
+}
+
+double htbl_load_factor(htbl *t)
+{
+    float j = 0;
+    float i = htbl_n_entries(t);;
+    while(t) {
+        while (t -> buckets) {
+            j++;
+        }
+    }
+    return (i / j);
+}
+
+unsigned int htbl_max_bucket(htbl *t)
+{
+    int i = 0;
+    int j = 0;
+    while(t) {
+        while (t -> buckets) {
+            while (t -> buckets[i]) {
+                i++;
+            }
+            if (i > j) {
+                j = i;
+            }
+        }
+    }
+    return j;
+}
+
+void htbl_insert(char *s, htbl *t)
+{
+    unsigned long int hash = good_hash(s);
+    unsigned new_hash = hash % t -> n_buckets;
+    bucket *bucket = (struct bucket*) malloc (sizeof(bucket));
+    bucket -> string = strdup(s);
+    bucket -> hash = new_hash;
+    bucket -> next = NULL;
+}
+
+int htbl_member(char *s, htbl *t)
+{
+    unsigned long int hash = good_hash(s);
+    unsigned new_hash = hash % t -> n_buckets;
+    if (t -> buckets[new_hash]) {
+        if (!strcmp(t -> buckets[new_hash] -> string, s)) {
+            return 1;
+        }
+        while (t -> buckets[new_hash] -> next != NULL) {
+            if (!strcmp(t -> buckets[new_hash] -> string, s)) {
+                return 1;
+            }
+            t -> buckets[new_hash] = t -> buckets[new_hash] -> next;
+        }
+        return 0;
+    }
+    return 0;
+}
+
+void htbl_show(htbl *t)
+{
+    int i = 0;
+    while (t -> buckets[i]) {
+        printf("h: %lu str: %c ", t -> buckets[i] -> hash, 
+                t -> buckets[i] -> string);
+        t -> buckets[i] = t -> buckets[i] -> next;
+        ++i;
+    }
+}
+
+void htbl_free(htbl *t)
+{
+    int i = 0;
+    struct bucket *bucket;
+    struct bucket *temp;
+    while (t -> buckets[i]) {
+        bucket = t -> buckets[i];
+        while (bucket) {
+            temp = bucket -> next;
+            free(bucket);
+            bucket = temp;
+        }
+        temp = bucket;
+        free(temp);
+    }
+}
+

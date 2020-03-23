@@ -1,0 +1,124 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * PROJ 2
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "board.h"
+#include "logic.h"
+#include "pos.h"
+
+// THISS IS MODIFIED implement the scanf that they showed, also add comments
+
+void gameplay(game* new_game) {
+
+    printf("\n");
+    board_show(new_game -> b);
+    char turn;
+    int col_number = 0;
+    struct pos pos;
+
+    if (new_game -> next == BLACK_NEXT) {
+        printf("\n");
+        printf("Black: ");
+    } else {
+        printf("\n");
+        printf("White: ");
+    }
+    scanf("%c%*c", &turn);
+
+    if (atof(&turn) >= (new_game -> b -> width)) {
+        printf("\n");
+        printf("Col is full. Try again.");
+        printf("\n");
+        gameplay(new_game);
+    }
+
+    printf("\n"); 
+    if (turn == '<') {
+        twist(new_game, CCW);
+    } else if (turn == '>') {
+        twist(new_game, CW);
+    } else if (&turn >= 0 || turn <= 9) {
+        pos = make_pos(0, atof(&turn));
+        if (board_get(new_game -> b, pos) != EMPTY) {
+            printf("The column is full. Try again.");
+            gameplay(new_game);
+        }  
+        drop_piece(new_game, atof(&turn));
+
+    } else if ((turn >= 'A' && turn <= 'Z') || (turn >= 'a' && turn <= 'z')) {
+        if (turn >= 'A' && turn <= 'Z') {
+            col_number = atof(&turn) - 65 + 10;
+        } else if (turn >= 'a' && turn <= 'z') {
+            printf("%d", turn);
+            col_number = atof(&turn) - 97 + 36;
+        }
+        pos = make_pos(0, atof(&turn));
+        if (board_get(new_game -> b, pos) != EMPTY) {
+            printf("The column is full. Try again.");
+            gameplay(new_game);
+        } 
+
+        drop_piece(new_game, col_number);
+    }
+    
+    if (game_outcome(new_game) == WHITE_WIN) {
+        board_show(new_game -> b);
+        printf("\n");
+        printf("WHITE wins!");
+        printf("\n");
+        exit(1);
+    } else if (game_outcome(new_game) == BLACK_WIN) {
+        board_show(new_game -> b);
+        printf("\n");
+        printf("BLACK wins!");
+        printf("\n");
+        exit(1);
+    } else if (game_outcome(new_game) == IN_PROGRESS) {
+        switch (new_game -> next) {
+            case(BLACK_NEXT):
+                new_game -> next = WHITE_NEXT;
+                gameplay(new_game);
+                break;
+            case(WHITE_NEXT):
+                new_game -> next = BLACK_NEXT;
+                gameplay(new_game);
+                break;
+        }
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    int i = 0;
+    int w, h, r;
+    char  rep = '\0';
+    while (i < 8) {
+        if (!strcmp(argv[i], "-w")) {
+            i++;
+            w = atof(argv[i]);
+        } else if (!strcmp(argv[i], "-h")) {
+            i++;
+            h = atof(argv[i]);
+        } else if (!strcmp(argv[i], "-r")) {
+            i++;
+            r = atof(argv[i]);
+        } else if (!strcmp(argv[i], "-b")) {
+            rep = 'b';
+        } else if (!strcmp(argv[i], "-m")) {
+            rep = 'm';
+        }
+        i++;
+    }
+    game* game = NULL;  
+    if (rep == 'b') {
+        game = new_game(r, w, h, BITS);
+    } else if (rep == 'm') {
+        game = new_game(r, w, h, MATRIX);
+    }
+    gameplay(game);
+    return 0;
+}

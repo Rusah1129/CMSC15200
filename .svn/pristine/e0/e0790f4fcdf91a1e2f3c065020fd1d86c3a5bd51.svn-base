@@ -1,0 +1,140 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * PROJ 1
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include "board.h"
+#include "pos.h"
+#include "logic.h"
+/*
+void bunch_of_games() {
+    game* game1 = new_game(4, 7, 5, MATRIX);
+    drop_piece()
+
+}
+*/
+void evidence_board_new() {
+    
+    struct board* board1 = board_new(3, 4, MATRIX);
+    board_show(board1);
+    printf("\n");
+    struct board* board2 = board_new(10, 10, MATRIX);
+    board_show(board2);
+    printf("\n");
+    struct board* board3 = board_new(16, 2, MATRIX);
+    board_show(board3);
+    printf("\n");
+    board_free(board3);
+}
+
+void evidence_board_show() {
+    struct board* board1 = board_new(4, 5, MATRIX);
+    board_show(board1);
+    printf("\n");
+    struct board* board2 = board_new(4, 8, MATRIX);
+    board_show(board2);
+    printf("\n");
+    struct board* board3 = board_new(3, 2, MATRIX);
+    board_show(board3);
+    printf("\n");
+    board_free(board1);
+    board_free(board2);
+    board_free(board3);
+}
+
+void evidence_board_set() {
+    struct board* board1 = board_new(4, 5, MATRIX);
+    struct pos pos1 = make_pos(0, 0);
+    board_set(board1, pos1, BLACK);
+    board_show(board1);
+    printf("\n");
+    struct board* board2 = board_new(6, 3, MATRIX);
+    struct pos pos2 = make_pos(1, 2);
+    board_set(board2, pos2, WHITE);
+    board_show(board2);
+    printf("\n");
+    board_free(board1);
+    board_free(board2);
+}
+/*
+void evidence_board_get() {
+
+}*/
+
+void evidence_drop_piece() {
+    game* game1 = new_game(3, 4, 5, MATRIX);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    game1 -> next = WHITE_NEXT;
+    drop_piece(game1, 3);
+    board_show(game1 -> b);
+    printf("\n");
+}
+
+void evidence_twist() {
+    game* game1 = new_game(3, 4, 5, MATRIX);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 0);
+    board_show(game1 -> b);
+    printf("\n");
+    drop_piece(game1, 3);
+    board_show(game1 -> b);
+    printf("\n");
+    twist(game1, CCW);
+    board_show(game1 -> b);
+    printf("\n");
+}
+
+
+void evidence_game_outcome() {
+    game* game1 = new_game(3, 4, 5, MATRIX);
+    drop_piece(game1, 2);
+    drop_piece(game1, 1);
+    drop_piece(game1, 3);
+    drop_piece(game1, 3);
+    drop_piece(game1, 3);
+    board_show(game1 -> b);
+    printf("\n");
+    game_outcome(game1);    
+    drop_piece(game1, 2);
+    drop_piece(game1, 1);
+    board_show(game1 -> b);
+    printf("\n");
+    game_outcome(game1);
+    printf("\n");
+    struct pos pos = make_pos(3, 3);
+    board_set(game1 -> b, pos, BLACK);
+    struct pos pos2 = make_pos(2, 2);
+    board_set(game1 -> b, pos2, BLACK);
+    struct pos pos3 = make_pos(1, 1);
+    board_set(game1 -> b, pos3, BLACK);
+    board_show(game1 -> b);
+    printf("\n");
+    game_outcome(game1);
+    printf("\n");
+}
+
+int main(int argc, char *argv[]) 
+{ /*
+    evidence_board_new();
+    evidence_board_show();
+    evidence_board_set();
+    evidence_drop_piece(); */
+    evidence_twist();
+    //evidence_game_outcome();
+    return 0;
+}

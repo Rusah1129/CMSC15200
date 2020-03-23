@@ -1,0 +1,15 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * Proj 2
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "pos.h"
+
+pos make_pos(unsigned int r, unsigned int c) {
+
+    struct pos pos1 = {r, c};
+    return pos1;
+}

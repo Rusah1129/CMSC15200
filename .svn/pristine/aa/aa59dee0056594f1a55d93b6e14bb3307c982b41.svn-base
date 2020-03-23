@@ -1,0 +1,175 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * PROJ 2
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "board.h"
+#include "logic.h"
+
+board* board_new(unsigned int width, unsigned int height, enum type type)
+{
+    if (width <= 0 || height <= 0) {
+                fprintf(stderr, "width and height must be positive");
+                exit(1);
+            }
+    unsigned i, j, size;
+    struct board *board1 = (board*) malloc (sizeof(board));
+    board1 -> width = width;
+    board1 -> height = height;
+    board1 -> type = type;
+    union board_rep set;
+    switch (type) { 
+        case MATRIX:   
+            set.matrix = (cell**) malloc (sizeof(cell*) * height);
+            for (i = 0; i < height; i++) {
+                set.matrix[i] = (cell*) malloc (sizeof(cell) * width);
+                for (j = 0; j < width; j++) {
+                    set.matrix[i][j] = EMPTY;
+                    }   
+            }
+            return board1;
+        case BITS:
+            size = (height * width * 2);
+            if (size % 32 == 0) {
+                size = size / 32;
+            } else {
+                size = (size / 32) + 1;
+            }
+            unsigned int *new_array = (unsigned int*) malloc (sizeof(unsigned 
+                int) * size);
+            for (j = 0; j < size; j++) {
+                new_array[j] = new_array[j];
+            }
+            board1 -> u.bits = new_array;
+            printf("%d. ", board1 -> u.bits[0]);
+            return board1;
+        }
+}
+
+void board_free(board* b)
+{
+    unsigned i;
+    for (i = 0; i < b -> height; i++) {
+        free(b -> u.matrix[i]);
+    }
+    free(b);
+}
+
+void board_show(board* b) {
+    unsigned int j, length, size, new_byte;
+    unsigned int i = 0;
+    switch (b -> type) 
+    {
+        case BITS:
+            printf("%d", b -> u.bits[0]);
+            length = b -> height * b -> width * 2;
+            size = length;
+            if (size % 32 == 0) {
+                size = size / 32;
+            } else {
+                size = (size / 32) + 1;
+            }
+            for (j = size - 1; j >= 0; j--) {
+            //    printf("%d, %d", j, b -> u.bits[j]);
+                /*new_byte = b -> u.bits[j];
+                while ((i % 32 != 0) && j != 0) {
+                    if ((new_byte & 3) == 0) {
+                        printf(".");
+                        new_byte >>= 2;
+                        i = i + 2;
+                    } else if ((new_byte & 3) == 2) {
+                        printf("*");
+                        new_byte >>= 2;
+                        i = i + 2;
+                    } else if ((new_byte & 3) == 2) {
+                        printf("o");
+                        new_byte >>= 2;
+                        i = i + 2;
+                    }
+                }
+                if (j == 0) {
+                    while (i < length) {
+                        if ((new_byte & 3) == 0) {
+                        printf(".");
+                        new_byte >>= 2;
+                        i = i + 2;
+                    } else if ((new_byte & 3) == 2) {
+                        printf("*");
+                        new_byte >>= 2;
+                        i = i + 2;
+                    } else if ((new_byte & 3) == 2) {
+                        printf("o");
+                        new_byte >>= 2;
+                        i = i + 2;
+                    }
+                }
+                printf("\n");
+
+            } */
+            break;
+        case MATRIX:
+            for (i = 0; i <= b -> height; i++) {
+                if (i == 0) {
+                    printf("  ");
+                    for (j = 0; j < b -> width; j++) {
+                        printf("%d", j);
+                    }
+                    printf("\n");
+                } else {
+                    printf("%d ", i - 1);
+                    for (j = 0; j < b -> width; j++) {
+                        struct pos pos = make_pos(i - 1, j);
+                        if (board_get(b, pos) == EMPTY) {
+                            printf(".");
+                        } else if (board_get(b, pos) == BLACK) {
+                            printf("*");
+                        } else if (board_get(b, pos) == WHITE) {
+                            printf("o");
+                        }
+                    }
+                }
+                printf("\n");
+            }
+            break;
+        }
+    }
+}
+
+cell board_get(board* b, pos p) {
+
+    int r, w, c;
+
+    switch(b -> type) 
+    {
+        case BITS:
+            r = p.r - 1;
+            w = b -> width;
+            c = p.c;
+            return b -> u.bits[((r - 1) * w + c) % 16];
+        case MATRIX:
+            return b -> u.matrix[p.r][p.c];
+    }
+}
+
+void board_set(board* b, pos p, cell c) {
+
+    int r, w, c2;
+    switch(b -> type)
+    {
+        case BITS:
+            r = p.r - 1;
+            w = b -> width;
+            c2 = p.c;
+            b -> u.bits[((r - 1) * w + c2) % 16] = ~c;
+            break;
+        case MATRIX:
+            b -> u.matrix[p.r][p.c] = c;
+            break;
+    }
+
+}
+
+

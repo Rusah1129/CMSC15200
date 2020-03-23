@@ -18,7 +18,7 @@ unsigned int fib(unsigned int n)
   else if (n==1)
     return 1;
   else
-    return fib(n-1) + fib(n);
+    return fib(n-1) + n;
 }
 
 /* === fact === */
@@ -28,7 +28,7 @@ unsigned int fact(unsigned int n)
   int i=n;
   int result=1;
   while (i-->0)
-    result*=n;
+    result = result * n;
   return result;
 }
 
@@ -40,6 +40,7 @@ unsigned int fact(unsigned int n)
 int *int_new(int init)
 {
   int *n;
+  n = (int *) malloc (sizeof(int) * 1);
   *n = init;
   return n;
 }
@@ -68,9 +69,11 @@ unsigned int num_evens(unsigned int *a, unsigned int len)
 {
   int i;
   int n=0;
-  for (i=0; i<=len; i++)
-    if (!(a[i]%2)) 
-      n++;
+  for (i=0; i<=len; i++) {
+    if (a[i]%2 != 0) { 
+      n++; 
+    }
+  }
   return i;
 }
 

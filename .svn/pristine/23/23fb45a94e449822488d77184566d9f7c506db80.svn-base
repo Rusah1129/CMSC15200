@@ -1,0 +1,121 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * PROJ 1
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "logic.h"
+
+game* new_game(unsigned int run, unsigned int width, unsigned int height,
+    enum type type) 
+{
+    game* new_game = (game*) malloc (sizeof(game));
+    new_game -> run = run;
+    new_game -> b = board_new(width, height, type);;
+    new_game -> next = BLACK_NEXT;
+    return new_game;
+}
+
+void game_free(game* g) {
+    board_free(g -> b);
+    free(g);
+}
+
+int drop_piece(game* g, unsigned int col) {
+    int i;
+    for (i = g -> b -> height; i >= 0; i--) {
+        struct pos pos = make_pos(i - 1, col);
+        if (board_get(g -> b, pos) == EMPTY) {
+            if (g -> next == BLACK_NEXT) {
+                board_set(g -> b, pos, BLACK);
+                return 1;
+            } else if (g -> next == WHITE_NEXT) {
+                board_set(g -> b, pos, WHITE);
+                return 1;
+            }
+        }
+    }   
+    return 0;
+}
+
+void twist(game* g, direction d) 
+{
+    unsigned int i, j;
+    unsigned int new_pos;
+    printf("%d %d", g -> b -> height, g -> b -> width);
+    board* new_board = board_new(g -> b -> height, g -> b -> width, MATRIX);
+    g -> b = new_board;
+    printf("%d %d", g -> b -> height, g -> b -> width);
+    switch (d)
+    {
+        case CW:
+            for (i = 0; i < g -> b -> height; i++) {
+                for (j = g -> b -> width; j >= 0; j--) {
+                    struct pos pos = make_pos(i, j);
+                    if (board_get(g -> b, pos) != EMPTY) {
+                        if (board_get(g -> b, pos) == BLACK) {
+                            board_set(new_board, pos, BLACK);
+                            new_pos = j;
+                        } else {
+                            board_set(new_board, pos, WHITE);
+                            new_pos = j;
+                        }
+                    }  
+                }
+                new_pos = g -> b -> width;
+            }
+            break;
+        case CCW:
+            for (i = 0; i < g -> b -> height; i++) {
+                for (j = 0; j >= g -> b -> width; j++) {
+                    struct pos pos = make_pos(i, j);
+                    if (board_get(g -> b, pos) != EMPTY) {
+                        if (board_get(g -> b, pos) == BLACK) {
+                            board_set(new_board, pos, BLACK);
+                            new_pos = 0;
+                        } else {
+                            board_set(new_board, pos, WHITE);
+                            new_pos = 0;
+                        }
+                    }
+                }
+                new_pos = g -> b -> width;
+            }
+            break;
+    }
+    g -> b = new_board;
+}
+/*
+
+int check_vertical() {
+    unsigned int i, j;
+    for (i = 0; i < -----; i++) {}
+    
+}
+
+outcome check_horizontal() {
+
+}
+
+outcome check_diagonal() {
+`
+}
+
+outcome black_wins() {
+
+}
+
+outcome white_wins() {
+}
+
+outcome game_outcome(game* g) {
+    if (black_wins() == 1) && (white_wins() == 1) {
+        return DRAW;
+    } else if (black_wins() == 1) {
+    } else if (white_wins() == 1) {
+    } else {
+       return IN_PROGRESS; 
+    }
+}*/

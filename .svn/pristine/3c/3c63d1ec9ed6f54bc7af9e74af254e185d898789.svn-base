@@ -1,0 +1,202 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * PROJ 2
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "board.h"
+#include "logic.h"
+#include "pos.h"
+
+
+/* helper to start new gameplay with specified game set up in main */
+void gameplay(game* new_game) {
+
+    printf("\n");
+    board_show(new_game -> b);
+    char turn;
+    int col_number = 0;
+    struct pos pos;
+
+    if (new_game -> next == BLACK_NEXT) {
+        printf("\n");
+        printf("Black: ");
+    } else {
+        printf("\n");
+        printf("White: ");
+    }
+    scanf("%c%*c", &turn);
+    if ((new_game -> b -> width) <= atof(&turn)) {
+        printf("\n");
+        printf("Col is out of bounds. Try again.");
+        printf("\n");
+        gameplay(new_game);
+    }
+    
+    if (turn == '<') {
+        twist(new_game, CCW);
+    } else if (turn == '>') {
+        twist(new_game, CW);
+    } else if ((turn >= 'A' && turn <= 'Z') || (turn >= 'a' && turn <= 'z')) {
+        if (turn >= 'A' && turn <= 'Z') {
+            col_number = (int)turn - 65 + 10;
+            if (col_number >= new_game -> b -> width) {
+                printf("\n");
+                printf("Col is out of bounds. Try again.");
+                printf("\n");
+                gameplay(new_game);
+            }
+        } else if (turn >= 'a' && turn <= 'z') {
+            col_number = (int)turn - 97 + 36;
+            if (col_number >= new_game -> b -> width) {
+                printf("\n");
+                printf("Col is out of bounds. Try again.");
+                printf("\n");
+                gameplay(new_game);
+            }
+        }
+        pos = make_pos(0, col_number);
+        if (board_get(new_game -> b, pos) != EMPTY) {
+            printf("\n");
+            printf("The column is full. Try again.");
+            printf("\n");
+            gameplay(new_game);
+        } 
+
+        drop_piece(new_game, col_number);
+    } else if (turn >= '0' && turn <= '9') {
+        pos = make_pos(0, atof(&turn));
+        if (board_get(new_game -> b, pos) != EMPTY) {
+            printf("\n");
+            printf("The column is full. Try again.");
+            printf("\n");
+            gameplay(new_game);
+        }
+        drop_piece(new_game, atof(&turn));
+    } else { 
+        printf("\n");
+        printf("Please input a valid column. ? is not valid.");
+        printf("\n");
+        gameplay(new_game);
+    }
+    
+    if (game_outcome(new_game) == WHITE_WIN) {
+        printf("\n"); 
+        board_show(new_game -> b);
+        printf("\n\n");
+        printf("WHITE wins!");
+        printf("\n\n");
+        exit(0);
+    } else if (game_outcome(new_game) == BLACK_WIN) {
+        printf("\n");
+        board_show(new_game -> b);
+        printf("\n\n");
+        printf("BLACK wins!");
+        printf("\n\n");
+        exit(0);
+    } else if (game_outcome(new_game) == IN_PROGRESS) {
+        switch (new_game -> next) {
+            case(BLACK_NEXT):
+                new_game -> next = WHITE_NEXT;
+                gameplay(new_game);
+                break;
+            case(WHITE_NEXT):
+                new_game -> next = BLACK_NEXT;
+                gameplay(new_game);
+                break;
+        }
+    } else if (game_outcome(new_game) == DRAW) {
+        printf("\n");
+        board_show(new_game -> b);
+        printf("\n");
+        printf("DRAW!");
+        printf("\n");
+        exit(0);
+    }
+}
+
+/* helper to print error messages. */
+void error_messages(int w, int h, int r, char rep) {
+    
+    if (w != 0) {
+        printf("\n");
+        printf("Specify only one width.");
+        printf("\n\n");
+        exit(1);
+    }
+    if (h != 0) {
+        printf("\n");
+        printf("Specify only one height.");
+        printf("\n\n");
+        exit(1);
+    }
+    if (r != 0) {
+        printf("\n");
+        printf("Specify only one run length.");
+        printf("\n\n");
+        exit(1);
+    }
+    if (rep == 'b' || rep == 'm') {
+        printf("\n");
+        printf("either matrix or bit, not both.");
+        printf("\n\n");   
+        exit(1);
+    }
+    if (rep == '\0') {
+        printf("\n");
+        printf("Specify either matrix or bit with -m or -b.");
+        printf("\n\n");
+        exit(1);
+    }
+} 
+
+/* main: set up a new game with arguments from command line, with 
+    error checking. */
+int main(int argc, char* argv[])
+{
+    int i = 1;
+    int w = 0;
+    int h = 0;
+    int  r = 0;
+    char  rep = '\0';
+    while (argv[i]) {
+        if (!strcmp(argv[i], "-w")) {
+            error_messages(w, 0, 0, 'a');
+            i++;
+            w = atof(argv[i]);
+        } else if (!strcmp(argv[i], "-h")) {
+            error_messages(0, h, 0, 'a');
+            i++;
+            h = atof(argv[i]);
+        } else if (!strcmp(argv[i], "-r")) {
+            error_messages(0, 0, r, 'a');
+            i++;
+            r = atof(argv[i]);
+        } else if (!strcmp(argv[i], "-b")) {
+            error_messages(0, 0, 0, rep);
+            rep = 'b';
+        } else if (!strcmp(argv[i], "-m")) {
+            error_messages(0, 0, 0, rep);
+            rep = 'm';
+        } else {
+            printf("\n");
+            printf("Invalid specifications. Must be -h, -w, -r, -b, or -m.");
+            printf("\n\n");
+            exit(1);
+        }
+        i++;
+    }
+
+    error_messages(0, 0, 0, rep);
+
+    game* game = NULL;  
+    if (rep == 'b') {
+        game = new_game(r, w, h, BITS);
+    } else if (rep == 'm') {
+        game = new_game(r, w, h, MATRIX);
+    }
+    gameplay(game);
+    return 0;
+}

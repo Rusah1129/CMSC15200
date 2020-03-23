@@ -146,35 +146,23 @@ void evidence_convert_units() {
     printf("%f %s %d\n", m9.value, m9.units, m9.exponent);
 
 }
-/*
+
 double mixture_weight(struct mixture* mixture) {
 
-    struct element *el1;
+    struct element hydrogen = {"hydrogen", 1};
+    struct element oxygen = {"oxygen", 8};
 
-    el1 -> name = {ptr1, ptr2};
-    el1 -> weight = {ptr3, ptr4};
+    struct elements *els1[2] = {&hydrogen, &oxygen};
+    struct atoms[2] = {2, 1};
 
-    char *ptr1 = strdup("Hydrogen");
-    char *ptr2 = strdup("Chlorine");
-    int ptr3 = 3.0;
-    int ptr4 = 2.0;
-    int *ptr5 = {1, 1};
+    struct molecule water = {"water", 2, *els1, *atoms};
     
-    struct molecule ml1;
-    ml1.name = strdup("HCL");
-    ml1.nelements = 2;
-    ml1.elements = &el1;
-    ml1.atoms = ptr5; 
-
-    union chemical cl1;
-    cl1.molecule = ml1;
-
-    struct mixture my_mixture;
-    my_mixture, tag = MOLECULE;
-    my_mixture -> cl1[i].tag =  MOLECULE;
+    struct tagged_chemical my_chemical;
+    my_chemical.tag = MOLECULE;
+    my_chemical.chemical.molecule = &water;
 
 }
-*/
+
 int main(int argc, char *argv[]) 
 {
     evidence_split_at();

@@ -1,0 +1,105 @@
+/* Ruhi Sah, rsah
+ * CS 152, Winter 2020
+ * PROJ 1
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "board.h"
+#include "logic.h"
+
+board* board_new(unsigned int width, unsigned int height, enum type type) 
+{
+
+    if (width <= 0 || height <= 0) {
+        fprintf(stderr, "width and height must be positive");
+        exit(1);
+    }
+    if (type == BITS) {
+        fprintf(stderr, "bits will come later");
+        exit(1);
+    }
+    unsigned i, j;
+    struct board *board1 = (board*) malloc (sizeof(board));
+    board1 -> width = width;
+    board1 -> height = height;
+    board1 -> type = type;
+    union board_rep set;
+    set.matrix = (cell**) malloc (sizeof(cell*) * height);
+    for (i = 0; i < height; i++) {
+        set.matrix[i] = (cell*) malloc (sizeof(cell) * width);
+        for (j = 0; j < width; j++) {
+            set.matrix[i][j] = EMPTY;
+            }
+    }
+    board1 -> u = set;
+    return board1;
+}
+
+void board_free(board* b) 
+{
+    if (b -> type == BITS) {
+        fprintf(stderr, "bits will come later");
+        exit(1);
+    }
+    unsigned i;
+    for (i = 0; i < b -> height; i++) {
+        free(b -> u.matrix[i]);
+    }  
+    free(b);
+}
+
+void board_show(board* b) {
+    
+    if (b -> type == BITS) {
+        fprintf(stderr, "bits will come later");
+        exit(1);
+    }
+
+
+    unsigned i, j;
+    for (i = 0; i <= b -> height; i++) {
+        if (i == 0) {
+            printf("  ");
+            for (j = 0; j < b -> width; j++) {
+                printf("%d", j);
+            }
+            printf("\n");
+        } else {
+            printf("%d ", i - 1);
+            for (j = 0; j < b -> width; j++) {
+                struct pos pos = make_pos(i - 1, j);
+                if (board_get(b, pos) == EMPTY) {
+                    printf(".");
+                } else if (board_get(b, pos) == BLACK) {
+                    printf("*");
+                } else if (board_get(b, pos) == WHITE) {
+                    printf("o");
+                } 
+            }
+        } 
+        printf("\n");
+    }
+}
+
+cell board_get(board* b, pos p) {
+
+    if (b -> type == BITS) {
+        fprintf(stderr, "bits will come later");
+        exit(1);
+    }
+
+    return b -> u.matrix[p.r][p.c];
+}
+
+void board_set(board* b, pos p, cell c) {
+
+    if (b -> type == BITS) {
+        fprintf(stderr, "bits will come later");
+        exit(1);
+    }
+
+    b -> u.matrix[p.r][p.c] = c;    
+}
+

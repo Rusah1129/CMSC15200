@@ -23,7 +23,7 @@ int exists_positive(int a[], unsigned int alen) {
     int counter = 0;
     while (counter < alen) {
         if (a[counter] > 0) {
-            return 1;
+            return (a[counter] > 0);
         }  
         counter++;
     }
