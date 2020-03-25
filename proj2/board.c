@@ -22,6 +22,20 @@ board* board_new(unsigned int width, unsigned int height, enum type type)
     board1 -> type = type;
     union board_rep set;
     switch (type) { 
+        case BITS:
+            size = (height * width * 2);
+            if (size % 32 == 0) {
+                size = size / 32;
+            } else {
+                size = (size / 32) + 1;
+            }
+            unsigned int *new_array = (unsigned int*) malloc (sizeof(unsigned
+                int) * size);
+            for (j = 0; j < size; j++) {
+                new_array[j] = 0;
+            }
+            board1 -> u.bits = new_array;
+            return board1;
         case MATRIX:   
             set.matrix = (cell**) malloc (sizeof(cell*) * height);
             for (i = 0; i < height; i++) {
@@ -31,20 +45,6 @@ board* board_new(unsigned int width, unsigned int height, enum type type)
                     }   
             }
             board1 -> u.matrix = set.matrix;
-            return board1;
-        case BITS:
-            size = (height * width * 2);
-            if (size % 32 == 0) {
-                size = size / 32;
-            } else {
-                size = (size / 32) + 1;
-            }
-            unsigned int *new_array = (unsigned int*) malloc (sizeof(unsigned 
-                int) * size);
-            for (j = 0; j < size; j++) {
-                new_array[j] = 0;
-            }
-            board1 -> u.bits = new_array;
             return board1;
         }
 }
@@ -73,7 +73,7 @@ void board_free(board* b)
     }
 }
 
-/* helper to print row numbers for bit representation. */
+/* helper to print row numbers. */
 void print_vertical(unsigned int k) {
 
     char alphabet[52] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
@@ -93,7 +93,7 @@ void print_vertical(unsigned int k) {
         } 
 } 
 
-/* helper to print column numbers for bit representation. */
+/* helper to print column numbers. */
 void print_horizontal(unsigned int k) {
 
     char alphabet[52] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
