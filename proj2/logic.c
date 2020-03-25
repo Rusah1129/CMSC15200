@@ -40,7 +40,7 @@ void game_free(game* g) {
 
 int drop_piece(game* g, unsigned int col) {
     int i;
-    for (i = g -> b -> height; i >= 0; i--) {
+    for (i = g -> b -> height; i > 0; i--) {
         struct pos pos = make_pos(i - 1, col);
         if (board_get(g -> b, pos) == EMPTY) {
            if (g -> next == BLACK_NEXT) {
